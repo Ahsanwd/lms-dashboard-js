@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced LMS Dashboard</title>
+    <!-- SEO Best Practices -->
+    <meta name="description"
+        content="An advanced Learning Management System dashboard with dynamic course tracking, progress indicators, and custom categorization.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#6366f1',
+                        primaryHover: '#4f46e5',
+                        secondary: '#10b981',
+                        darkBg: '#0f172a',
+                        darkCard: '#1e293b',
+                        darkBorder: '#334155'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body
+    class="bg-gray-50 text-gray-900 dark:bg-darkBg dark:text-gray-100 font-sans transition-colors duration-300 selection:bg-primary selection:text-white">
+    <div class="flex h-screen overflow-hidden relative">
+
+        <!-- Sidebar -->
+        <aside id="sidebar"
+            class="w-64 bg-white dark:bg-darkCard shadow-[4px_0_24px_rgba(0,0,0,0.02)] flex-shrink-0 transition-transform duration-300 transform -translate-x-full lg:translate-x-0 fixed lg:relative z-30 h-full border-r border-gray-100 dark:border-darkBorder">
+            <div class="h-16 flex items-center justify-between px-6 border-b border-gray-100 dark:border-darkBorder">
+                <a href="#" class="flex items-center gap-2 group">
+                    <div
+                        class="w-8 h-8 rounded-lg bg-primary text-white flex items-center justify-center font-bold shadow-lg shadow-primary/30 group-hover:rotate-12 transition-transform">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <span
+                        class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-500">LearnFlow</span>
+                </a>
+                <button id="closeSidebar"
+                    class="lg:hidden text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200 transition-colors w-8 h-8 flex items-center justify-center rounded-md hover:bg-gray-100 dark:hover:bg-gray-800">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="p-4 flex flex-col h-[calc(100%-4rem)] justify-between">
+                <nav class="space-y-1 mt-4" id="sidebarNav">
+                    <!-- Nav items injected via JS -->
+                </nav>
+
+                <!-- Premium Upgrade Card -->
+                <div
+                    class="p-4 rounded-xl bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-900/40 dark:to-purple-900/40 border border-indigo-100 dark:border-indigo-800/50 mt-8">
+                    <div
+                        class="w-10 h-10 rounded-full bg-white dark:bg-darkCard flex items-center justify-center text-primary shadow-sm mb-3">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h4 class="font-semibold text-gray-900 dark:text-white mb-1">Upgrade to Pro</h4>
+                    <p class="text-xs text-gray-600 dark:text-gray-400 mb-3">Get access to all courses and premium
+                        features.</p>
+                    <button
+                        class="w-full py-2 bg-white dark:bg-primary text-primary dark:text-white text-sm font-medium rounded-lg shadow-sm hover:shadow-md transition-shadow dark:hover:bg-primaryHover">
+                        Upgrade Now
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Overlay -->
+        <div id="sidebarOverlay"
+            class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm z-20 hidden lg:hidden transition-opacity opacity-0">
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col h-full overflow-hidden w-full relative">
+            <!-- Header -->
+            <header
+                class="h-16 bg-white/80 dark:bg-darkCard/80 backdrop-blur-md z-10 px-6 flex items-center justify-between border-b border-gray-100 dark:border-darkBorder sticky top-0">
+                <div class="flex items-center">
+                    <button id="openSidebar"
+                        class="lg:hidden mr-4 text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200 transition-colors w-10 h-10 flex items-center justify-center rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <!-- Global Search -->
+                    <div class="hidden md:flex relative group">
+                        <div
+                            class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400 group-focus-within:text-primary transition-colors">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <input type="text" placeholder="Search anything..."
+                            class="pl-10 pr-4 py-2 w-64 rounded-xl bg-gray-100 dark:bg-gray-800/50 border-transparent focus:bg-white dark:focus:bg-darkBg focus:border-primary focus:ring-0 text-sm transition-all shadow-inner focus:shadow-md">
+                    </div>
+                </div>
+
+                <div class="flex items-center space-x-3 sm:space-x-4">
+                    <button
+                        class="w-10 h-10 rounded-full flex items-center justify-center text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors relative">
+                        <i class="far fa-bell"></i>
+                        <span
+                            class="absolute top-2 right-2 w-2 h-2 rounded-full bg-red-500 border-2 border-white dark:border-darkCard"></span>
+                    </button>
+                    <button id="darkModeToggle"
+                        class="w-10 h-10 rounded-full flex items-center justify-center text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                        aria-label="Toggle Dark Mode">
+                        <i class="fas fa-moon dark:hidden"></i>
+                        <i class="fas fa-sun hidden dark:block text-yellow-400"></i>
+                    </button>
+                    <div
+                        class="flex items-center gap-3 pl-2 sm:pl-4 sm:border-l border-gray-200 dark:border-darkBorder cursor-pointer">
+                        <div class="hidden sm:block text-right">
+                            <p class="text-sm font-semibold text-gray-900 dark:text-white leading-none">Alex Morgan</p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Free Plan</p>
+                        </div>
+                        <img src="https://i.pravatar.cc/150?img=68" alt="Profile"
+                            class="w-9 h-9 rounded-full border-2 border-white dark:border-gray-800 shadow-sm object-cover">
+                    </div>
+                </div>
+            </header>
+
+            <!-- Content Area -->
+            <main class="flex-1 overflow-y-auto px-4 py-6 md:p-8 custom-scrollbar relative" id="mainScroll">
+
+                <!-- Welcome Banner -->
+                <div
+                    class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-primary to-purple-600 text-white p-6 sm:p-8 mb-8 shadow-lg shadow-primary/20">
+                    <div class="relative z-10 max-w-2xl">
+                        <h2 class="text-2xl sm:text-3xl font-bold mb-2">Welcome back, Alex! 👋</h2>
+                        <p class="text-indigo-100 mb-6 max-w-xl">You've completed 70% of your current courses. Keep up
+                            the great work and you'll reach your daily goal soon.</p>
+                        <button
+                            class="bg-white text-primary px-5 py-2.5 rounded-xl font-medium shadow-sm hover:shadow-md transition-all hover:-translate-y-0.5 inline-flex flex-center gap-2">
+                            Resume Learning <i class="fas fa-arrow-right text-sm"></i>
+                        </button>
+                    </div>
+                    <!-- Decorative Elements -->
+                    <div
+                        class="absolute top-0 right-0 -tralslate-y-12 translate-x-8 w-64 h-64 bg-white opacity-10 rounded-full blur-2xl">
+                    </div>
+                    <div
+                        class="absolute bottom-0 right-32 translate-y-1/2 w-32 h-32 bg-purple-400 opacity-20 rounded-full blur-xl">
+                    </div>
+                    <i class="fas fa-book-reader absolute -bottom-4 right-8 text-white/10 text-9xl -rotate-12"></i>
+                </div>
+
+                <!-- Controls: Tabs, Filters, Add Button -->
+                <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-6 gap-4">
+                    <div
+                        class="flex items-center gap-6 border-b border-gray-200 dark:border-darkBorder w-full lg:w-auto overflow-x-auto hide-scrollbar pb-px">
+                        <button
+                            class="pb-3 border-b-2 border-primary text-primary font-medium text-sm whitespace-nowrap px-1">Active
+                            Courses</button>
+                        <button
+                            class="pb-3 border-b-2 border-transparent text-gray-500 hover:text-gray-800 dark:hover:text-gray-300 font-medium text-sm transition-colors whitespace-nowrap px-1">Completed</button>
+                        <button
+                            class="pb-3 border-b-2 border-transparent text-gray-500 hover:text-gray-800 dark:hover:text-gray-300 font-medium text-sm transition-colors whitespace-nowrap px-1">Bookmarked</button>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row items-center gap-3 w-full lg:w-auto">
+                        <div class="relative w-full sm:w-auto flex-1 sm:flex-none">
+                            <i
+                                class="fas fa-filter absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                            <select id="categoryFilter"
+                                class="w-full sm:w-40 pl-10 pr-8 py-2.5 rounded-xl bg-white dark:bg-darkCard border border-gray-200 dark:border-darkBorder focus:outline-none focus:ring-2 focus:ring-primary/50 text-sm appearance-none cursor-pointer shadow-sm transition-shadow">
+                                <option value="All">All Categories</option>
+                                <!-- Categories injected via JS -->
+                            </select>
+                            <i
+                                class="fas fa-chevron-down absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none text-xs"></i>
+                        </div>
+                        <button id="addCourseBtn"
+                            class="w-full sm:w-auto px-5 py-2.5 bg-gray-900 dark:bg-white text-white dark:text-gray-900 text-sm font-medium rounded-xl shadow-sm hover:shadow-md transition-all flex items-center justify-center gap-2 hover:-translate-y-0.5">
+                            <i class="fas fa-plus"></i> Add Course
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Course Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6" id="courseGrid">
+                    <!-- Courses injected via JS -->
+                </div>
+
+                <!-- Empty State -->
+                <div id="emptyState" class="hidden flex-col items-center justify-center py-20 px-4">
+                    <div
+                        class="w-24 h-24 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mb-6">
+                        <i class="fas fa-search text-4xl text-gray-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">No courses found</h3>
+                    <p class="text-gray-500 dark:text-gray-400 text-center max-w-sm">We couldn't find any courses
+                        matching your current filters. Try selecting a different category or adding a new course.</p>
+                    <button id="clearFiltersBtn" class="mt-6 text-primary font-medium hover:underline">Clear
+                        Filters</button>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Details Modal -->
+    <div id="detailsModal" class="fixed inset-0 z-[60] flex items-center justify-center invisible">
+        <div class="absolute inset-0 bg-gray-900/60 backdrop-blur-sm opacity-0 transition-opacity duration-300"
+            id="detailsModalOverlay"></div>
+        <div class="bg-white dark:bg-darkCard rounded-2xl shadow-2xl w-full max-w-2xl z-10 transform scale-95 opacity-0 transition-all duration-300 mx-4 overflow-hidden flex flex-col max-h-[90vh]"
+            id="detailsModalContentWrapper">
+            <!-- Close button floating -->
+            <button id="closeDetailsModal"
+                class="absolute top-4 right-4 w-8 h-8 bg-black/20 hover:bg-black/40 text-white rounded-full flex items-center justify-center z-10 transition-colors backdrop-blur-md">
+                <i class="fas fa-times"></i>
+            </button>
+            <div id="modalContent" class="overflow-y-auto custom-scrollbar">
+                <!-- Content injected via JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Course Modal -->
+    <div id="addCourseModal" class="fixed inset-0 z-[60] flex items-center justify-center invisible">
+        <div class="absolute inset-0 bg-gray-900/60 backdrop-blur-sm opacity-0 transition-opacity duration-300"
+            id="addModalOverlay"></div>
+        <form id="addCourseForm"
+            class="bg-white dark:bg-darkCard rounded-2xl shadow-2xl w-full max-w-md z-10 transform translate-y-8 opacity-0 transition-all duration-300 mx-4 flex flex-col max-h-[90vh]"
+            id="addModalContentWrapper">
+            <div class="p-6 border-b border-gray-100 dark:border-darkBorder flex justify-between items-center">
+                <div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white">Add New Course</h3>
+                    <p class="text-xs text-gray-500 mt-1">Fill in the details to catalog a new course.</p>
+                </div>
+                <button type="button" id="closeAddModal"
+                    class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="p-6 overflow-y-auto custom-scrollbar space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Course
+                        Title</label>
+                    <input type="text" name="title" required placeholder="e.g. Complete React Developer"
+                        class="w-full px-4 py-2.5 rounded-xl bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-darkBorder focus:outline-none focus:ring-2 focus:ring-primary/50 text-gray-900 dark:text-white transition-all text-sm">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label
+                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Category</label>
+                        <select name="category" required
+                            class="w-full px-4 py-2.5 rounded-xl bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-darkBorder focus:outline-none focus:ring-2 focus:ring-primary/50 text-gray-900 dark:text-white transition-all text-sm appearance-none">
+                            <option value="Development">Development</option>
+                            <option value="Design">Design</option>
+                            <option value="Business">Business</option>
+                            <option value="Marketing">Marketing</option>
+                            <option value="Data Science">Data Science</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label
+                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Instructor</label>
+                        <input type="text" name="instructor" required placeholder="e.g. John Doe"
+                            class="w-full px-4 py-2.5 rounded-xl bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-darkBorder focus:outline-none focus:ring-2 focus:ring-primary/50 text-gray-900 dark:text-white transition-all text-sm">
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Current
+                            Progress (%)</label>
+                        <input type="number" name="progress" min="0" max="100" value="0" required
+                            class="w-full px-4 py-2.5 rounded-xl bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-darkBorder focus:outline-none focus:ring-2 focus:ring-primary/50 text-gray-900 dark:text-white transition-all text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Total
+                            Lessons</label>
+                        <input type="number" name="lessons" min="1" value="10" required
+                            class="w-full px-4 py-2.5 rounded-xl bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-darkBorder focus:outline-none focus:ring-2 focus:ring-primary/50 text-gray-900 dark:text-white transition-all text-sm">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Cover Image
+                        (Optional URL)</label>
+                    <input type="url" name="image" placeholder="https://unsplash.com/..."
+                        class="w-full px-4 py-2.5 rounded-xl bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-darkBorder focus:outline-none focus:ring-2 focus:ring-primary/50 text-gray-900 dark:text-white transition-all text-sm">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Short
+                        Description</label>
+                    <textarea name="description" rows="3" placeholder="Briefly describe what this course is about..."
+                        class="w-full px-4 py-2.5 rounded-xl bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-darkBorder focus:outline-none focus:ring-2 focus:ring-primary/50 text-gray-900 dark:text-white transition-all text-sm resize-none"></textarea>
+                </div>
+            </div>
+
+            <div
+                class="p-6 border-t border-gray-100 dark:border-darkBorder flex justify-end gap-3 bg-gray-50 dark:bg-gray-800/20 rounded-b-2xl">
+                <button type="button" id="cancelCourseBtn"
+                    class="px-5 py-2.5 rounded-xl text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors text-sm font-medium">Cancel</button>
+                <button type="submit"
+                    class="px-5 py-2.5 bg-primary text-white text-sm font-medium rounded-xl hover:bg-primaryHover transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5">Save
+                    Course</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Scripts -->
+    <script type="module" src="./js/app.js"></script>
+</body>
+
+</html>
